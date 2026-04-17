@@ -1,0 +1,22 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+.venv/
+venv/
+
+# Env and secrets
+.env
+
+# Data
+/data/chroma/
+/data/raw/
+!data/raw/.gitkeep
+!data/chroma/.gitkeep
+
+# Tools
+.pytest_cache/
+.mypy_cache/
+.streamlit/
