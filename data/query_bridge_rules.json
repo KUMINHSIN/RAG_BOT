@@ -1,0 +1,36 @@
+{
+  "rules": [
+    {
+      "name": "image_to_music_via_emotion",
+      "all_of_groups": [
+        ["照片", "影像", "圖片", "image", "photo"],
+        ["音樂", "music", "生成", "轉"]
+      ],
+      "expansions": [
+        "情緒辨識",
+        "情緒特徵",
+        "情緒轉音樂",
+        "音樂生成流程"
+      ]
+    },
+    {
+      "name": "method_or_rationale_question",
+      "any_of_terms": ["如何", "怎麼", "依據", "原理", "why", "how"],
+      "expansions": [
+        "技術依據",
+        "特徵萃取",
+        "流程"
+      ]
+    },
+    {
+      "name": "emotion_music_english_bridge",
+      "all_of_groups": [
+        ["emotion"],
+        ["music"]
+      ],
+      "expansions": [
+        "emotion recognition to music generation pipeline"
+      ]
+    }
+  ]
+}

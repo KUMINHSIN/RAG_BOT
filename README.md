@@ -13,6 +13,7 @@ The system answers questions about the project only from retrieved source chunks
 - RetrievalQA pipeline built on LangChain + Chroma
 - Google Gemini models for both embeddings and generation
 - Streamlit showcase UI designed for live demo and portfolio presentation
+- Configurable query-bridge rules for cross-wording retrieval (no hardcoded domain logic)
 - Pre-demo health check script to verify the system before showing it to others
 - RAGAS-ready evaluation workflow for quality measurement
 
@@ -31,6 +32,7 @@ The system answers questions about the project only from retrieved source chunks
 - Answer chain: `RetrievalQA` with `return_source_documents=True`
 - LLM: `gemini-2.5-flash`
 - Embeddings: `models/gemini-embedding-001`
+- Query bridge: editable rules in `data/query_bridge_rules.json`
 - Quality workflow: `scripts/pre_demo_check.py` + `evaluation/run_ragas.py`
 
 ## Repository Structure
@@ -40,6 +42,7 @@ scripts/        CLI helpers for indexing, QA, and demo checks
 evaluation/     Sample evaluation set and RAGAS runner
 data/raw/       Source PDFs
 data/chroma/    Local vector index persistence
+data/query_bridge_rules.json   Project-specific synonym/bridge rules
 ```
 
 ## Quick Start
@@ -59,6 +62,13 @@ Add your `GOOGLE_API_KEY` to `.env`.
 
 ### 3. Add source documents
 Place your thesis PDFs under `data/raw/`.
+
+### 3.1 (Optional) Adapt wording bridge rules
+If your users and documents use different wording, edit:
+
+`data/query_bridge_rules.json`
+
+You can keep the engine generic and only replace rules per project.
 
 ### 4. Build the index
 ```bash

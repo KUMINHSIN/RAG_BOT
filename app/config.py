@@ -23,6 +23,14 @@ class Settings:
     chunk_size: int
     chunk_overlap: int
     retrieval_k: int
+    query_bridge_enabled: bool
+    query_bridge_rules_path: Path
+
+
+def _as_bool(value: str | None, default: bool) -> bool:
+    if value is None:
+        return default
+    return value.strip().lower() in {"1", "true", "yes", "y", "on"}
 
 
 def get_settings() -> Settings:
@@ -40,6 +48,10 @@ def get_settings() -> Settings:
         chroma_dir=Path(os.getenv("CHROMA_DIR", "./data/chroma")),
         collection_name=os.getenv("COLLECTION_NAME", "thesis_docs"),
         chunk_size=int(os.getenv("CHUNK_SIZE", "1000")),
-        chunk_overlap=int(os.getenv("CHUNK_OVERLAP", "150")),
-        retrieval_k=int(os.getenv("RETRIEVAL_K", "4")),
+        chunk_overlap=int(os.getenv("CHUNK_OVERLAP", "180")),
+        retrieval_k=int(os.getenv("RETRIEVAL_K", "6")),
+        query_bridge_enabled=_as_bool(os.getenv("QUERY_BRIDGE_ENABLED"), True),
+        query_bridge_rules_path=Path(
+            os.getenv("QUERY_BRIDGE_RULES_PATH", "./data/query_bridge_rules.json")
+        ),
     )

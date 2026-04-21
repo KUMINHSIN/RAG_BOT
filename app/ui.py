@@ -11,10 +11,10 @@ from app.rag import ask_question
 PROJECT_TAGLINE = "可追溯來源的畢專 RAG 問答展示"
 
 DEMO_QUESTIONS = [
-    "你們專題的核心目標是什麼？",
-    "這個系統如何降低 LLM 幻覺？",
-    "你們的資料切片與檢索策略是什麼？",
-    "如果文件裡沒有答案，系統會怎麼做？",
+    "專題主要是做什麼？",
+    "照片轉成音樂中間的依據是什麼？",
+    "主要技術有哪些？",
+    "生成音樂後這個 app 可以做什麼？",
 ]
 
 SHOWCASE_POINTS = [

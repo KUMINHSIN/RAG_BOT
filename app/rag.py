@@ -9,6 +9,23 @@ from langchain.prompts import ChatPromptTemplate
 
 from app.config import get_settings
 from app.prompts import RAG_SYSTEM_PROMPT, RAG_USER_TEMPLATE
+from app.query_bridge import expand_query_for_retrieval
+
+
+def _format_qa_error(exc: Exception) -> RuntimeError:
+    message = str(exc)
+    lowered = message.lower()
+
+    if "quota" in lowered or "resourceexhausted" in lowered or "429" in lowered:
+        return RuntimeError(
+            "Gemini 配額已達上限（429）。\n"
+            "你可以改用其他可用模型、等待配額重置，或啟用計費方案。"
+        )
+
+    if "api key" in lowered or "permission" in lowered or "unauth" in lowered:
+        return RuntimeError("API Key 驗證失敗，請檢查 .env 的 GOOGLE_API_KEY 是否正確且仍有效。")
+
+    return RuntimeError(f"RAG 查詢失敗：{message}")
 
 
 def build_qa_chain() -> RetrievalQA:
@@ -58,7 +75,17 @@ def build_qa_chain() -> RetrievalQA:
 
 def ask_question(question: str) -> dict[str, Any]:
     chain = build_qa_chain()
-    response = chain.invoke({"query": question})
+    settings = get_settings()
+    retrieval_query = expand_query_for_retrieval(
+        question=question,
+        rules_path=settings.query_bridge_rules_path,
+        enabled=settings.query_bridge_enabled,
+    )
+
+    try:
+        response = chain.invoke({"query": retrieval_query})
+    except Exception as exc:  # noqa: BLE001
+        raise _format_qa_error(exc) from exc
 
     sources = []
     for doc in response.get("source_documents", []):
